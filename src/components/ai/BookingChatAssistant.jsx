@@ -334,7 +334,7 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
           
           <div className="flex items-center gap-2.5 cursor-pointer min-w-0 flex-1">
             <div className="relative w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-inner overflow-hidden shrink-0">
-              <img src="/logo-moreno.png" alt="Moreno Car Center" className="w-8 h-8 object-contain" />
+              <img src="logo-moreno.png" alt="Moreno Car Center" className="w-8 h-8 object-contain" />
             </div>
             
             <div className="flex flex-col min-w-0 flex-1">
@@ -605,7 +605,6 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="flex-1 px-4 py-2.5 rounded-full bg-white dark:bg-[#2A3942] text-[#111B21] dark:text-[#E9EDEF] placeholder-[#54656F] dark:placeholder-[#8696A0] focus:outline-none text-base border-none shadow-sm"
-              autoFocus
             />
             
             <button

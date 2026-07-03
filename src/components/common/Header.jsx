@@ -21,7 +21,7 @@ export default function Header({ activeTab, setActiveTab, isAdmin, setIsAdmin, t
             className="flex items-center gap-3 cursor-pointer group shrink-0"
           >
             <img 
-              src={theme === 'dark' ? '/logo-moreno-dark.png' : '/logo-moreno.png'} 
+              src={theme === 'dark' ? 'logo-moreno-dark.png' : 'logo-moreno.png'} 
               alt="Moreno Car Center" 
               className="h-10 md:h-13 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />

@@ -7,7 +7,7 @@ const OFFERS = [
     title: 'Tratamiento Cerámico 9H Showroom',
     price: '$85.000',
     discount: '25% OFF ESPECIAL',
-    image: '/showcase-1.png',
+    image: 'showcase-1.png',
   },
   {
     id: 2,
@@ -46,12 +46,12 @@ export default function HomeShowcase({ onSelectBooking }) {
       {/* 1. Gigantic Centered Horizontal Logo occupying all horizontal space */}
       <div className="w-[96%] sm:w-[90%] max-w-4xl flex items-center justify-center my-auto shrink-0 px-1">
         <img 
-          src="/logo-moreno.png" 
+          src="logo-moreno.png" 
           alt="Moreno Car Center" 
           className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl dark:hidden hover:scale-105 transition-transform duration-500" 
         />
         <img 
-          src="/logo-moreno-dark.png" 
+          src="logo-moreno-dark.png" 
           alt="Moreno Car Center" 
           className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl hidden dark:block hover:scale-105 transition-transform duration-500" 
         />
@@ -103,8 +103,8 @@ export default function HomeShowcase({ onSelectBooking }) {
         </div>
       </div>
 
-      {/* 3. Full-Width "Reserva Turno" Button at the Bottom with extra spacing regarding bottom menu */}
-      <div className="w-full max-w-3xl mx-auto px-4 pb-24 md:pb-8 shrink-0">
+      {/* 3. Full-Width "Reserva Turno" Button elevated significantly above mobile bottom menu */}
+      <div className="w-full max-w-3xl mx-auto px-4 pb-36 sm:pb-32 md:pb-12 mb-4 shrink-0">
         <button
           onClick={() => onSelectBooking()}
           className="w-full py-4 sm:py-5 rounded-3xl bg-[#DC1B46] hover:bg-[#b81438] text-white font-black text-base sm:text-xl tracking-wide shadow-[0_12px_35px_-8px_rgba(220,27,70,0.65)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer border border-white/20 group"
