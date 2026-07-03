@@ -3,10 +3,10 @@ import { Sparkles, Calendar, Bot, Home, Briefcase, Sun, Moon } from 'lucide-reac
 
 export default function Header({ activeTab, setActiveTab, isAdmin, setIsAdmin, theme, toggleTheme }) {
   const navItems = [
-    { id: 'home', label: 'Inicio', icon: Home },
-    { id: 'services', label: 'Catálogo & Precios', icon: Sparkles },
-    { id: 'booking', label: 'Turnos & Agenda', icon: Calendar },
-    { id: 'ai', label: 'Asistente IA', icon: Bot },
+    { id: 'home', label: 'Inicio', mobileLabel: 'Home', icon: Home },
+    { id: 'services', label: 'Catálogo & Precios', mobileLabel: 'Precios', icon: Sparkles },
+    { id: 'booking', label: 'Turnos & Agenda', mobileLabel: 'Turnos', icon: Calendar },
+    { id: 'ai', label: 'Asistente IA', mobileLabel: 'Agente', icon: Bot },
   ];
 
   return (
@@ -18,12 +18,12 @@ export default function Header({ activeTab, setActiveTab, isAdmin, setIsAdmin, t
           {/* Logo Section */}
           <div 
             onClick={() => setActiveTab('home')}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-3 cursor-pointer group shrink-0"
           >
             <img 
               src={theme === 'dark' ? '/logo-moreno-dark.png' : '/logo-moreno.png'} 
               alt="Moreno Car Center" 
-              className="h-11 md:h-13 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-10 md:h-13 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </div>
 
@@ -99,8 +99,8 @@ export default function Header({ activeTab, setActiveTab, isAdmin, setIsAdmin, t
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-slate-200 dark:border-slate-800 px-2 py-2 flex justify-around items-center shadow-2xl bg-white/95 dark:bg-slate-950/95">
+      {/* Mobile Bottom Navigation Bar - Sober, Straight Edge-to-Edge without rounded borders */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 w-full z-50 border-t border-slate-300 dark:border-slate-800 bg-white dark:bg-[#070A12] flex justify-between items-stretch shadow-2xl rounded-none">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id && !isAdmin;
@@ -111,23 +111,27 @@ export default function Header({ activeTab, setActiveTab, isAdmin, setIsAdmin, t
                 setIsAdmin(false);
                 setActiveTab(item.id);
               }}
-              className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-all ${
-                isActive ? 'text-[#DC1B46] font-extrabold scale-105' : 'text-slate-500 dark:text-slate-400'
+              className={`flex-1 flex flex-col items-center justify-center py-2.5 rounded-none transition-colors border-none cursor-pointer ${
+                isActive
+                  ? 'text-[#DC1B46] font-black border-t-2 border-[#DC1B46] bg-rose-50/50 dark:bg-rose-950/20'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-900/50'
               }`}
             >
-              <Icon className="w-5 h-5 mb-0.5" />
-              <span className="text-[11px] leading-none">{item.label}</span>
+              <Icon className="w-5 h-5 mb-1" />
+              <span className="text-[11px] font-bold tracking-tight leading-none">{item.mobileLabel}</span>
             </button>
           );
         })}
         <button
           onClick={() => setIsAdmin(!isAdmin)}
-          className={`flex flex-col items-center justify-center px-3 py-1 rounded-xl transition-all ${
-            isAdmin ? 'text-[#DC1B46] font-extrabold scale-105' : 'text-slate-500 dark:text-slate-400'
+          className={`flex-1 flex flex-col items-center justify-center py-2.5 rounded-none transition-colors border-none cursor-pointer ${
+            isAdmin
+              ? 'text-[#DC1B46] font-black border-t-2 border-[#DC1B46] bg-rose-50/50 dark:bg-rose-950/20'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-900/50'
           }`}
         >
-          <Briefcase className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] leading-none">Admin</span>
+          <Briefcase className="w-5 h-5 mb-1" />
+          <span className="text-[11px] font-bold tracking-tight leading-none">Admin</span>
         </button>
       </nav>
     </>

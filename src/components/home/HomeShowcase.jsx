@@ -1,137 +1,120 @@
 import React from 'react';
-import { Sparkles, Shield, Droplets, Trophy, ArrowRight, CheckCircle2, Clock, Star } from 'lucide-react';
+import { Calendar, ArrowRight, Tag } from 'lucide-react';
 
-export default function HomeShowcase({ onSelectBooking, onSelectCatalog, onSelectAI }) {
+const OFFERS = [
+  {
+    id: 1,
+    title: 'Tratamiento Cerámico 9H Showroom',
+    price: '$85.000',
+    discount: '25% OFF ESPECIAL',
+    image: '/showcase-1.png',
+  },
+  {
+    id: 2,
+    title: 'Pulido Espejo Correctivo 0km',
+    price: '$65.000',
+    discount: 'OFERTA ESTRELLA',
+    image: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 3,
+    title: 'Detallado & Sanitización a Vapor',
+    price: '$35.000',
+    discount: '20% OFF EFECTIVO',
+    image: 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 4,
+    title: 'Sellado Acrílico & Protección UV',
+    price: '$48.000',
+    discount: 'BONUS PROTECTOR',
+    image: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: 5,
+    title: 'Limpieza Profunda Cuero & Tapizados',
+    price: '$42.000',
+    discount: 'ECO 90% AGUA',
+    image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80',
+  },
+];
+
+export default function HomeShowcase({ onSelectBooking }) {
   return (
-    <div className="w-full min-h-[calc(100vh-80px)] flex flex-col justify-between pb-16 md:pb-8">
-      {/* Main Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-8 md:pt-14 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center flex-1">
-        
-        {/* Left Copy Section */}
-        <div className="lg:col-span-7 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#DC1B46]/10 border border-[#DC1B46]/25 text-[#DC1B46] dark:text-rose-400 text-xs md:text-sm font-bold">
-            <Sparkles className="w-4 h-4 text-[#DC1B46] animate-spin" />
-            <span>Centro Estético Vehicular & Detallado Ecológico</span>
-          </div>
+    <div className="w-full h-[calc(100vh-65px)] flex flex-col justify-between items-center py-2 md:py-4 overflow-hidden select-none">
+      
+      {/* 1. Gigantic Centered Horizontal Logo occupying all horizontal space */}
+      <div className="w-[96%] sm:w-[90%] max-w-4xl flex items-center justify-center my-auto shrink-0 px-1">
+        <img 
+          src="/logo-moreno.png" 
+          alt="Moreno Car Center" 
+          className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl dark:hidden hover:scale-105 transition-transform duration-500" 
+        />
+        <img 
+          src="/logo-moreno-dark.png" 
+          alt="Moreno Car Center" 
+          className="w-full h-auto max-h-[28vh] object-contain drop-shadow-2xl hidden dark:block hover:scale-105 transition-transform duration-500" 
+        />
+      </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-slate-900 dark:text-white">
-            Tu Auto Merece un Brillo <br />
-            <span className="text-[#DC1B46]">
-              Nivel Showroom 0km
-            </span>
-          </h1>
+      {/* 2. Animated Infinite Marquee Slider Running to the Left */}
+      <div className="w-full my-auto py-2 sm:py-4 overflow-hidden relative shrink-0">
+        {/* Left and Right Subtle Gradient Mask */}
+        <div className="absolute inset-y-0 left-0 w-8 sm:w-20 bg-gradient-to-r from-slate-50 dark:from-[#090D16] to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-8 sm:w-20 bg-gradient-to-l from-slate-50 dark:from-[#090D16] to-transparent z-10 pointer-events-none"></div>
 
-          <p className="text-slate-600 dark:text-slate-300 text-lg md:text-xl max-w-2xl leading-relaxed font-normal">
-            Tecnología de detallado premium al alcance de un clic. Combinamos higienización a vapor profunda, pulido espejo correctivo y lavado ecológico que ahorra un <span className="text-[#DC1B46] font-bold">90% de agua</span>.
-          </p>
-
-          {/* Key Value Points */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm">
-              <CheckCircle2 className="w-5 h-5 text-[#DC1B46] flex-shrink-0" />
-              <span className="text-sm font-bold text-slate-800 dark:text-slate-200">Precios transparentes garantizados</span>
-            </div>
-            <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm">
-              <Clock className="w-5 h-5 text-[#DC1B46] flex-shrink-0" />
-              <span className="text-sm font-bold text-slate-800 dark:text-slate-200">Reserva con bloqueo online al instante</span>
-            </div>
-          </div>
-
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-4 pt-4">
-            <button
-              onClick={onSelectBooking}
-              className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-[#DC1B46] hover:bg-[#b81438] text-white font-extrabold text-base shadow-xl shadow-[#DC1B46]/25 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+        {/* Marquee Track */}
+        <div className="animate-marquee gap-4 px-4">
+          {[...OFFERS, ...OFFERS].map((offer, idx) => (
+            <div
+              key={`${offer.id}-${idx}`}
+              onClick={() => onSelectBooking({ id: offer.id, name: offer.title, price: parseInt(offer.price.replace(/\D/g, '')) || 85000 })}
+              className="w-[240px] sm:w-[310px] h-[230px] sm:h-[280px] rounded-3xl overflow-hidden relative group cursor-pointer shadow-xl hover:shadow-2xl border border-slate-200/80 dark:border-white/10 shrink-0 transition-all duration-300 hover:-translate-y-1 bg-slate-900"
             >
-              <span>Reservar Turno Ahora</span>
-              <ArrowRight className="w-5 h-5" />
-            </button>
+              {/* Background Image */}
+              <img
+                src={offer.image}
+                alt={offer.title}
+                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+              />
 
-            <button
-              onClick={onSelectCatalog}
-              className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 hover:border-[#DC1B46] text-slate-800 dark:text-slate-200 hover:text-[#DC1B46] dark:hover:text-white font-bold text-base transition-all duration-200 cursor-pointer shadow-sm"
-            >
-              <span>Ver Catálogo ($18.000 - $85.000)</span>
-            </button>
-          </div>
-        </div>
+              {/* Gradient Dark Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
 
-        {/* Right Visual Showcase / Stats Cards */}
-        <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          
-          {/* Card 1: Water saved */}
-          <div className="glass-card p-6 rounded-3xl relative overflow-hidden flex flex-col justify-between">
-            <div className="w-12 h-12 rounded-2xl bg-[#DC1B46]/10 border border-[#DC1B46]/20 flex items-center justify-center mb-4">
-              <Droplets className="w-6 h-6 text-[#DC1B46]" />
-            </div>
-            <div>
-              <div className="text-3xl font-black text-slate-900 dark:text-white mb-1">+12,500 L</div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Agua potable preservada este mes gracias al lavado ecológico seco.</p>
-            </div>
-            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-[#DC1B46] font-bold">
-              <span>Compromiso Ambiental</span>
-              <span>100% Eco</span>
-            </div>
-          </div>
-
-          {/* Card 2: 5 Star Ratings */}
-          <div className="glass-card p-6 rounded-3xl relative overflow-hidden flex flex-col justify-between">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4">
-              <Trophy className="w-6 h-6 text-amber-500" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1 text-amber-500 mb-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-amber-500 text-amber-500" />
-                ))}
+              {/* Discount / Offer Badge Top Right */}
+              <div className="absolute top-3 right-3 z-10">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#DC1B46] text-white text-[10px] font-black tracking-wider uppercase shadow-lg shadow-[#DC1B46]/50">
+                  <Tag className="w-3 h-3" />
+                  {offer.discount}
+                </span>
               </div>
-              <div className="text-2xl font-black text-slate-900 dark:text-white mb-1">4.9 / 5.0</div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Calificación promedio de +850 clientes satisfechos en Google.</p>
-            </div>
-            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-amber-600 dark:text-amber-400 font-bold">
-              <span>Calidad Garantizada</span>
-              <span>Top Detailing</span>
-            </div>
-          </div>
 
-          {/* Card 3: AI Assistant Prompt banner */}
-          <div 
-            onClick={onSelectAI}
-            className="sm:col-span-2 glass-card p-6 rounded-3xl border border-[#DC1B46]/30 hover:border-[#DC1B46] cursor-pointer transition-all flex items-center justify-between gap-4 group shadow-md"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#DC1B46] flex items-center justify-center text-white shadow-lg shadow-[#DC1B46]/25 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-7 h-7" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-slate-900 dark:text-white group-hover:text-[#DC1B46] transition-colors">
-                  ¿Indeciso sobre qué servicio elegir?
+              {/* Offer Info Bottom */}
+              <div className="absolute bottom-0 inset-x-0 p-4 z-10 flex flex-col justify-end text-white">
+                <div className="text-xl sm:text-2xl font-black text-[#DC1B46] drop-shadow-md mb-0.5">
+                  {offer.price}
+                </div>
+                <h3 className="text-sm sm:text-base font-bold leading-snug group-hover:text-rose-200 transition-colors line-clamp-2">
+                  {offer.title}
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Consulta al instante con nuestro Asistente Virtual Inteligente con tecnología Gemini AI.
-                </p>
               </div>
             </div>
-            <ArrowRight className="w-6 h-6 text-slate-400 group-hover:text-[#DC1B46] group-hover:translate-x-1 transition-all flex-shrink-0" />
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* Bottom Live Bar */}
-      <div className="max-w-7xl mx-auto w-full px-4 md:px-8 pt-12">
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-          <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-[#DC1B46]" />
-            <span>Garantía Moreno Car Center: Si llueve en 24 hs, te repasamos el exterior sin cargo.</span>
-          </div>
-          <div className="flex items-center gap-6 font-bold text-slate-800 dark:text-slate-200">
-            <span>📍 Av. Principal 1420</span>
-            <span>🕒 Lun a Sáb 08:00 - 20:00</span>
-          </div>
+          ))}
         </div>
       </div>
+
+      {/* 3. Full-Width "Reserva Turno" Button at the Bottom with extra spacing regarding bottom menu */}
+      <div className="w-full max-w-3xl mx-auto px-4 pb-24 md:pb-8 shrink-0">
+        <button
+          onClick={() => onSelectBooking()}
+          className="w-full py-4 sm:py-5 rounded-3xl bg-[#DC1B46] hover:bg-[#b81438] text-white font-black text-base sm:text-xl tracking-wide shadow-[0_12px_35px_-8px_rgba(220,27,70,0.65)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer border border-white/20 group"
+        >
+          <Calendar className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform shrink-0" />
+          <span>Reserva Turno</span>
+          <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform shrink-0" />
+        </button>
+      </div>
+
     </div>
   );
 }
