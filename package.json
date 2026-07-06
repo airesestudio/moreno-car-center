@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy:staging": "vite build && firebase hosting:channel:deploy staging --expires 30d",
-    "deploy:prod": "vite build && firebase deploy --only hosting"
+    "deploy:staging": "vite build --mode staging && firebase deploy --only hosting -P staging && git add . && git commit -m \"Despliegue automatico a Staging\" && git push origin main",
+    "deploy:prod": "vite build --mode production && firebase deploy --only hosting -P production"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.4",

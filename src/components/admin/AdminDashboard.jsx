@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { getStoredBookings, updateBookingStatusInStorage, INITIAL_SERVICES, saveBookingToStorage } from '../../services/firebase';
-import { sendWhatsAppAlert } from '../../services/resend';
 import { Briefcase, CheckCircle2, Clock, AlertCircle, MessageSquare, BarChart3, Filter, Plus, RefreshCw } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -30,10 +29,7 @@ export default function AdminDashboard() {
     setOrders(updated);
   };
 
-  const handleNotifyClient = async (order) => {
-    await sendWhatsAppAlert(order);
-    alert(`✅ Notificación oficial enviada por WhatsApp a ${order.clientName} (${order.phone}) indicando que el vehículo [${order.plate}] está ${order.status.toUpperCase()}`);
-  };
+
 
   const handleQuickAddSubmit = (e) => {
     e.preventDefault();
@@ -204,13 +200,7 @@ export default function AdminDashboard() {
 
                       {/* Status move actions */}
                       <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
-                        <button
-                          onClick={() => handleNotifyClient(order)}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 hover:text-white text-xs font-bold flex items-center gap-1 transition-all cursor-pointer"
-                        >
-                          <MessageSquare className="w-3 h-3" />
-                          <span>Notificar</span>
-                        </button>
+
 
                         <div className="flex gap-1">
                           {col.id !== 'En Espera' && (

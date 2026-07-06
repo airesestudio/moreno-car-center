@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Clientes (lookup por patente) ───────────────────────────────────────
+    // STAGING / DEMO: lectura y escritura abierta para que el agente pueda
+    // registrar y consultar clientes sin autenticación.
+    // ⚠️ Antes de pasar a Producción: restringir con autenticación Firebase.
+    match /clientes/{patente} {
+      allow read, write: if true;
+    }
+
+    // Resto de colecciones: bloqueadas por defecto
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

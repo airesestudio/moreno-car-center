@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { INITIAL_SERVICES, saveBookingToStorage } from '../../services/firebase';
-import { sendBookingNotification } from '../../services/resend';
 import { Calendar as CalendarIcon, Clock, Car, User, CheckCircle2, ArrowLeft, ArrowRight, ShieldCheck, Sparkles, MapPin } from 'lucide-react';
 
 const TIME_SLOTS = [
@@ -59,7 +58,6 @@ export default function BookingWizard({ preselectedService, onBookingComplete })
 
     // Guardar en base emulada persistente (local storage)
     saveBookingToStorage(newOrder);
-    await sendBookingNotification(newOrder);
 
     setIsSubmitting(false);
     setConfirmedOrder(newOrder);

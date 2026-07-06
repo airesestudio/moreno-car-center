@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "project-6a071e3a-e71d-4d83-9ad"
+    "default": "moreno-car-center",
+    "staging": "moreno-car-center-stg",
+    "production": "moreno-car-center"
   }
 }

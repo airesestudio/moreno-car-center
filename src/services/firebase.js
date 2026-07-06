@@ -1,19 +1,56 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
+// Sin fallbacks hardcodeados: si no hay variables de entorno configuradas
+// la app lo reportará claramente en consola sin conectarse a producción por error.
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "demo-api-key",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "moreno-car-center.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "moreno-car-center",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "moreno-car-center.appspot.com",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "123456789012",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:123456789012:web:demo"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+// ─── Clientes por Patente ────────────────────────────────────────────────────
+
+/**
+ * Busca un cliente en Firestore por su patente normalizada.
+ * @param {string} patente - Patente en mayúsculas sin espacios (ej: "AE123CD")
+ * @returns {Promise<{name, phone, brandModel}|null>}
+ */
+export const getClientByPatente = async (patente) => {
+  try {
+    const ref = doc(db, 'clientes', patente);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      return snap.data();
+    }
+    return null;
+  } catch (err) {
+    console.error('[Firestore] Error buscando cliente:', err);
+    return null;
+  }
+};
+
+/**
+ * Guarda o actualiza un cliente en Firestore.
+ * @param {string} patente - Patente normalizada como ID del documento
+ * @param {{ name: string, phone: string, brandModel: string }} data
+ */
+export const saveClient = async (patente, data) => {
+  try {
+    const ref = doc(db, 'clientes', patente);
+    await setDoc(ref, { ...data, updatedAt: serverTimestamp() }, { merge: true });
+  } catch (err) {
+    console.error('[Firestore] Error guardando cliente:', err);
+  }
+};
 
 // Servicios Oficiales (Tarifas actualizadas Argentina)
 export const INITIAL_SERVICES = [

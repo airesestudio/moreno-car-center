@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, MoreVertical, CheckCheck, Smile, Paperclip, 
-  Mic, Send, CheckCircle2, Clock, Calendar, ShieldCheck, Car, Plus, BadgeCheck, Sparkles 
+  Mic, Send, CheckCircle2, Clock, Calendar, ShieldCheck, Car, Plus, BadgeCheck, Sparkles, Loader2
 } from 'lucide-react';
+import { getClientByPatente, saveClient } from '../../services/firebase';
 
 const ACRONYMS = ['VW', 'BMW', 'BYD', 'RAM', 'SUV', '4X4', 'GT', 'GTI', 'SRX', 'V6', 'V8', '16V', '4WD', 'AWD', 'OKM', '0KM', 'MG', 'JAC', 'PRO-4X', 'EV', 'DM-I'];
 
@@ -47,11 +48,7 @@ const DEFAULT_PREDICTIVE_CARS = [
   'Nissan Frontier PRO-4X',
 ];
 
-const INITIAL_PATENTES_DB = {
-  'AE123CD': { name: 'Carlos Rodríguez', phone: '11 5544 3322', brandModel: 'Volkswagen Amarok V6' },
-  'AD456EF': { name: 'María Gómez', phone: '11 8877 6655', brandModel: 'Peugeot 208 GT' },
-  'AF789GH': { name: 'Lucas Moreno', phone: '11 2233 4455', brandModel: 'Toyota Hilux SRX' },
-};
+// Base de clientes ahora en Firestore Staging — colección 'clientes/{patente}'
 
 const SERVICES_LIST = [
   { id: 'cer', name: 'Tratamiento Cerámico 9H Showroom', price: 85000 },
@@ -85,8 +82,8 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isSearching, setIsSearching] = useState(false); // loading mientras busca en Firestore
   const [step, setStep] = useState('ASK_PATENTE');
-  const [patentesDb, setPatentesDb] = useState(INITIAL_PATENTES_DB);
   const [predictiveCars, setPredictiveCars] = useState(() => {
     const saved = localStorage.getItem('moreno_predictive_cars');
     return saved ? JSON.parse(saved) : DEFAULT_PREDICTIVE_CARS;
@@ -189,8 +186,11 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
     }
   };
 
-  const handlePatenteInput = (pat) => {
-    const found = patentesDb[pat];
+  const handlePatenteInput = async (pat) => {
+    setIsSearching(true);
+    const found = await getClientByPatente(pat);
+    setIsSearching(false);
+
     if (found) {
       setBookingDraft((prev) => ({
         ...prev,
@@ -230,15 +230,13 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
     const formattedCar = toTitleCase(carName);
     setBookingDraft((prev) => {
       const updated = { ...prev, brandModel: formattedCar };
+      // Persistir nuevo cliente en Firestore Staging
       if (updated.patente) {
-        setPatentesDb((db) => ({
-          ...db,
-          [updated.patente]: {
-            name: updated.name,
-            phone: updated.phone,
-            brandModel: formattedCar,
-          },
-        }));
+        saveClient(updated.patente, {
+          name: updated.name,
+          phone: updated.phone,
+          brandModel: formattedCar,
+        });
       }
       return updated;
     });
@@ -547,7 +545,15 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
           </div>
         ))}
 
-        {isTyping && (
+        {/* Indicador de búsqueda en Firestore */}
+        {isSearching && (
+          <div className="flex items-center gap-2 max-w-xs px-4 py-3 rounded-2xl bg-white dark:bg-[#202C33] shadow-sm relative z-10 w-fit">
+            <Loader2 className="w-4 h-4 text-[#008069] animate-spin" />
+            <span className="text-xs text-[#54656F] dark:text-[#8696A0]">Consultando base de datos...</span>
+          </div>
+        )}
+
+        {isTyping && !isSearching && (
           <div className="flex items-center gap-1 max-w-xs px-4 py-3 rounded-2xl bg-white dark:bg-[#202C33] shadow-sm relative z-10 w-fit">
             <span className="w-2 h-2 rounded-full bg-[#008069] animate-bounce"></span>
             <span className="w-2 h-2 rounded-full bg-[#008069] animate-bounce [animation-delay:0.2s]"></span>
