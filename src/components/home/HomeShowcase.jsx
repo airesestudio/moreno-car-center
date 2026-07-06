@@ -39,7 +39,7 @@ const OFFERS = [
   },
 ];
 
-export default function HomeShowcase({ onSelectBooking }) {
+export default function HomeShowcase({ onSelectBooking, onSelectAI }) {
   return (
     <div className="w-full h-[calc(100vh-65px)] flex flex-col justify-between items-center py-2 md:py-4 overflow-hidden select-none">
       
@@ -57,8 +57,8 @@ export default function HomeShowcase({ onSelectBooking }) {
         />
       </div>
 
-      {/* 2. Animated Infinite Marquee Slider Running to the Left */}
-      <div className="w-full my-auto py-2 sm:py-4 overflow-hidden relative shrink-0">
+      {/* 2. Animated Infinite Marquee Slider — Cards 16:9 */}
+      <div className="w-full flex-1 py-2 sm:py-3 overflow-hidden relative flex items-center min-h-0">
         {/* Left and Right Subtle Gradient Mask */}
         <div className="absolute inset-y-0 left-0 w-8 sm:w-20 bg-gradient-to-r from-slate-50 dark:from-[#090D16] to-transparent z-10 pointer-events-none"></div>
         <div className="absolute inset-y-0 right-0 w-8 sm:w-20 bg-gradient-to-l from-slate-50 dark:from-[#090D16] to-transparent z-10 pointer-events-none"></div>
@@ -69,7 +69,7 @@ export default function HomeShowcase({ onSelectBooking }) {
             <div
               key={`${offer.id}-${idx}`}
               onClick={() => onSelectBooking({ id: offer.id, name: offer.title, price: parseInt(offer.price.replace(/\D/g, '')) || 85000 })}
-              className="w-[240px] sm:w-[310px] h-[230px] sm:h-[280px] rounded-3xl overflow-hidden relative group cursor-pointer shadow-xl hover:shadow-2xl border border-slate-200/80 dark:border-white/10 shrink-0 transition-all duration-300 hover:-translate-y-1 bg-slate-900"
+              className="w-[260px] sm:w-[340px] aspect-video rounded-3xl overflow-hidden relative group cursor-pointer shadow-xl hover:shadow-2xl border border-slate-200/80 dark:border-white/10 shrink-0 transition-all duration-300 hover:-translate-y-1 bg-slate-900"
             >
               {/* Background Image */}
               <img
@@ -90,11 +90,11 @@ export default function HomeShowcase({ onSelectBooking }) {
               </div>
 
               {/* Offer Info Bottom */}
-              <div className="absolute bottom-0 inset-x-0 p-4 z-10 flex flex-col justify-end text-white">
-                <div className="text-xl sm:text-2xl font-black text-[#DC1B46] drop-shadow-md mb-0.5">
+              <div className="absolute bottom-0 inset-x-0 p-3 z-10 flex flex-col justify-end text-white">
+                <div className="text-lg sm:text-xl font-black text-[#DC1B46] drop-shadow-md mb-0.5">
                   {offer.price}
                 </div>
-                <h3 className="text-sm sm:text-base font-bold leading-snug group-hover:text-rose-200 transition-colors line-clamp-2">
+                <h3 className="text-xs sm:text-sm font-bold leading-snug group-hover:text-rose-200 transition-colors line-clamp-2">
                   {offer.title}
                 </h3>
               </div>
@@ -103,10 +103,10 @@ export default function HomeShowcase({ onSelectBooking }) {
         </div>
       </div>
 
-      {/* 3. Full-Width "Reserva Turno" Button elevated significantly above mobile bottom menu */}
+      {/* 3. Full-Width "Reserva Turno" Button → abre el chat AI */}
       <div className="w-full max-w-3xl mx-auto px-4 pb-36 sm:pb-32 md:pb-12 mb-4 shrink-0">
         <button
-          onClick={() => onSelectBooking()}
+          onClick={() => onSelectAI()}
           className="w-full py-4 sm:py-5 rounded-3xl bg-[#DC1B46] hover:bg-[#b81438] text-white font-black text-base sm:text-xl tracking-wide shadow-[0_12px_35px_-8px_rgba(220,27,70,0.65)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer border border-white/20 group"
         >
           <Calendar className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform shrink-0" />

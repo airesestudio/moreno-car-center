@@ -82,8 +82,9 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [isSearching, setIsSearching] = useState(false); // loading mientras busca en Firestore
+  const [isSearching, setIsSearching] = useState(false);
   const [step, setStep] = useState('ASK_PATENTE');
+  const [pendingPatente, setPendingPatente] = useState(''); // patente esperando confirmación
   const [predictiveCars, setPredictiveCars] = useState(() => {
     const saved = localStorage.getItem('moreno_predictive_cars');
     return saved ? JSON.parse(saved) : DEFAULT_PREDICTIVE_CARS;
@@ -178,7 +179,11 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
     setInput('');
 
     if (step === 'ASK_PATENTE') {
-      handlePatenteInput(rawInputUpper || formattedInput);
+      // Guardar la patente y pedir confirmación antes de buscar en Firestore
+      const pat = rawInputUpper || formattedInput;
+      setPendingPatente(pat);
+      setStep('CONFIRM_PATENTE');
+      addAiMessage(`¿Confirmás que la patente es **${pat}**?`);
     } else if (step === 'ASK_NAME_PHONE') {
       handleNamePhoneInput(currentVal);
     } else if (step === 'SELECT_PREDICTIVE_CAR') {
@@ -421,6 +426,35 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
               </div>
             </div>
 
+            {/* Step 1b: Confirmar Patente */}
+            {step === 'CONFIRM_PATENTE' && m === messages[messages.length - 1] && (
+              <div className="mt-2 flex gap-2 w-full max-w-[86%] sm:max-w-md relative z-10">
+                <button
+                  onClick={() => {
+                    setMessages((prev) => [...prev, { id: Date.now(), sender: 'user', time: getCurrentTimeStr(), text: `Sí, es ${pendingPatente}` }]);
+                    setStep('ASK_PATENTE'); // reset por si vuelve
+                    handlePatenteInput(pendingPatente);
+                  }}
+                  className="flex-1 py-2.5 px-4 bg-[#008069] hover:bg-[#006a55] text-white font-black text-sm rounded-xl shadow-md transition-all cursor-pointer active:scale-95 flex items-center justify-center gap-2"
+                >
+                  <span>✅</span>
+                  <span className="font-mono tracking-widest">{pendingPatente}</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setMessages((prev) => [...prev, { id: Date.now(), sender: 'user', time: getCurrentTimeStr(), text: 'Quiero cambiarla' }]);
+                    setPendingPatente('');
+                    setStep('ASK_PATENTE');
+                    addAiMessage('Sin problema, escribíme la patente correcta:');
+                  }}
+                  className="py-2.5 px-4 bg-white dark:bg-[#202C33] hover:bg-slate-100 dark:hover:bg-[#2A3942] text-[#54656F] dark:text-[#8696A0] font-bold text-sm rounded-xl shadow-xs border border-slate-300 dark:border-slate-700 transition-all cursor-pointer active:scale-95 flex items-center gap-1.5"
+                >
+                  <span>✏️</span>
+                  <span>Cambiar</span>
+                </button>
+              </div>
+            )}
+
             {/* CONFIRM_FOUND_VEHICLE eliminado: el agente reconoce y continúa en silencio */}
 
             {/* Step 3: Select Service WhatsApp Interactive List */}
@@ -570,7 +604,7 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
       )}
 
       {/* 3. Exact WhatsApp Bottom Composer / Input Bar */}
-      {step !== 'COMPLETED' && step !== 'SELECT_TIME' && step !== 'SELECT_SERVICE' && (
+      {step !== 'COMPLETED' && step !== 'SELECT_TIME' && step !== 'SELECT_SERVICE' && step !== 'CONFIRM_PATENTE' && (
         <div className="shrink-0 p-2 sm:p-3 bg-[#F0F2F5] dark:bg-[#202C33] flex items-center gap-2 z-30">
           <div className="flex items-center gap-1.5 text-[#54656F] dark:text-[#8696A0] pl-1">
             <button className="hover:text-slate-800 dark:hover:text-white p-1 cursor-pointer"><Smile className="w-6 h-6" /></button>
