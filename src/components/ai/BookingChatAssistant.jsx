@@ -199,10 +199,18 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
         phone: found.phone,
         brandModel: found.brandModel,
       }));
-      setStep('CONFIRM_FOUND_VEHICLE');
-      addAiMessage(
-        `¡Hola de nuevo, *${found.name}*! 🚗\nEncontramos tu vehículo registrado en nuestra base:\n• *${found.brandModel}*\n• *Patente:* ${pat}\n\n¿Deseas agendar para este vehículo?`
-      );
+      // Cliente reconocido: continuar directamente sin confirmación de vehículo
+      if (bookingDraft.service) {
+        setStep('SELECT_TIME');
+        addAiMessage(
+          `¡Hola, *${found.name}*! 😊 Para el servicio de *${bookingDraft.service.name || bookingDraft.service.title}*, estos son los horarios disponibles para *HOY*:`
+        );
+      } else {
+        setStep('SELECT_SERVICE');
+        addAiMessage(
+          `¡Hola, *${found.name}*! 😊 ¿Qué tratamiento querés realizar hoy con tu *${found.brandModel}*?`
+        );
+      }
     } else {
       setBookingDraft((prev) => ({ ...prev, patente: pat }));
       setStep('ASK_NAME_PHONE');
@@ -413,36 +421,7 @@ export default function BookingChatAssistant({ preselectedService, onSelectServi
               </div>
             </div>
 
-            {/* Step 2a: Confirm Found Vehicle Interactive Buttons */}
-            {step === 'CONFIRM_FOUND_VEHICLE' && m === messages[messages.length - 1] && (
-              <div className="mt-2 flex flex-col sm:flex-row gap-2 w-full max-w-[86%] sm:max-w-md relative z-10">
-                <button
-                  onClick={() => {
-                    setMessages((prev) => [...prev, { id: Date.now(), sender: 'user', time: getCurrentTimeStr(), text: `Sí, agendar para mi ${bookingDraft.brandModel}` }]);
-                    if (bookingDraft.service) {
-                      setStep('SELECT_TIME');
-                      addAiMessage(`¡Genial! Para tu tratamiento de *${bookingDraft.service.name || bookingDraft.service.title}*, estos son los horarios libres para *HOY*:`);
-                    } else {
-                      setStep('SELECT_SERVICE');
-                      addAiMessage(`¡Entendido! Por favor elige qué tratamiento deseas realizar:`);
-                    }
-                  }}
-                  className="flex-1 py-2.5 px-4 bg-white dark:bg-[#202C33] hover:bg-emerald-50 dark:hover:bg-[#2A3942] text-[#008069] dark:text-[#00A884] font-bold text-sm rounded-xl shadow-xs border border-[#008069]/30 transition-all text-center cursor-pointer active:scale-98"
-                >
-                  ✅ Sí, agendar este vehículo
-                </button>
-                <button
-                  onClick={() => {
-                    setMessages((prev) => [...prev, { id: Date.now(), sender: 'user', time: getCurrentTimeStr(), text: 'Es otro vehículo' }]);
-                    setStep('ASK_PATENTE');
-                    addAiMessage('Entendido. Por favor escríbeme la nueva patente:');
-                  }}
-                  className="flex-1 py-2.5 px-4 bg-white dark:bg-[#202C33] hover:bg-slate-50 dark:hover:bg-[#2A3942] text-[#54656F] dark:text-[#8696A0] font-bold text-sm rounded-xl shadow-xs border border-slate-300 dark:border-slate-700 transition-all text-center cursor-pointer active:scale-98"
-                >
-                  🚗 Cambiar vehículo
-                </button>
-              </div>
-            )}
+            {/* CONFIRM_FOUND_VEHICLE eliminado: el agente reconoce y continúa en silencio */}
 
             {/* Step 3: Select Service WhatsApp Interactive List */}
             {step === 'SELECT_SERVICE' && m === messages[messages.length - 1] && (
