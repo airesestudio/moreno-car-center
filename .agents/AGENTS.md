@@ -75,7 +75,10 @@ Al iniciar una sesión, detectar automáticamente la máquina ejecutando `$env:C
 - "Veo que estás en **[PC_NAME]**. ¿Deseas hacer `git pull` para traer los cambios de la otra PC?"
 
 ### 6.2 Auto-save al arrancar
-El script `predev` en `package.json` ya ejecuta `git pull`, `git add`, `git commit "auto-save"` y `git push` automáticamente al correr `npm run dev`. No requiere intervención.
+Al iniciar una sesión de trabajo, el agente debe:
+1. Iniciar `auto-save.ps1` en segundo plano (commit + push cada 15 min)
+2. Indicar al usuario que el daemon está corriendo
+El script `predev` en `package.json` ejecuta `git pull` al correr `npm run dev`. El daemon se detiene solo con `end-day.ps1` o "Me voy".
 
 ### 6.3 Cierre de jornada ("Me voy" / "Nos vamos")
 Cuando el usuario diga **"Me voy"**, **"Nos vamos"** o similar:
