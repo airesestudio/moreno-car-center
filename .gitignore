@@ -6,3 +6,7 @@ dist/
 .env.production
 .DS_Store
 *.log
+.credenciales/
+.credenciales.7z
+.foldericons/
+cloudflared.exe
